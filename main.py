@@ -4,6 +4,8 @@ from tkinter import ttk
 import faculty_db as fdb
 from tkinter.messagebox import showinfo
 
+departments = ["Computer Science", "Information System", "Information Technology"]
+
 # show text info
 def show_info():
     print("faculty num:", faculty_num_var.get())
@@ -165,8 +167,23 @@ def view():
 
     tree.delete(*tree.get_children())
     contacts = []
+
     for r in result:
-        contacts.append((f'{r[0]}', f'{r[1]}', f'{r[2]}', f'{r[3]}'))
+        # display entries in treeview
+        subjects = []
+        if r[4] == 1:
+            subjects.append("Programming")
+        if r[5] == 1:
+            subjects.append("Database")
+        if r[6] == 1:
+            subjects.append("Data Communication")
+        if r[7] == 1:
+            subjects.append("Thesis")
+        if r[8] == 1:
+            subjects.append("Compiler Design")
+        if r[9] == 1:
+            subjects.append("Software Engineering")        
+        contacts.append((f'{r[0]}', f'{r[1]}', f'{r[2]}', f'{departments[r[3]]}', f'{", ".join(subjects)}'))
 
     for contact in contacts:
         tree.insert('', tk.END, values=contact)
@@ -313,7 +330,7 @@ tree.column("faculty_status",anchor=CENTER, stretch=NO, width=100)
 tree.heading('faculty_status', text='Faculty Status')
 tree.column("dept",anchor=CENTER, stretch=NO, width=150)
 tree.heading('dept', text='Department')
-tree.column("subjects",anchor=CENTER, stretch=NO, width=300)
+tree.column("subjects",anchor=CENTER, stretch=NO, width=600)
 tree.heading('subjects', text='Subjects Taught')
 tree.bind('<ButtonRelease-1>', selectItem)
 
